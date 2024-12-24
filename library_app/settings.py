@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'library.middleware.RegistrationRedirectMiddleware'
 ]
 
 ROOT_URLCONF = 'library_app.urls'
