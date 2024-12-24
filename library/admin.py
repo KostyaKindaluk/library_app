@@ -1,15 +1,15 @@
 from django.contrib import admin
-from library.models import (Accounts, Readers, Librarians, Admins, Books, BookCards, BorrowedBooks,
-                    AuthorBookCard, Authors, Genres, Reviews)
+from library.models import (Account, Reader, Librarian, Admin, Book, BookCard, BorrowedBook,
+                    AuthorBookCard, Author, Genre, Review)
 
-admin.site.register(Accounts)
-admin.site.register(Readers)
-admin.site.register(Librarians)
-admin.site.register(Admins)
-admin.site.register(Books)
-admin.site.register(BookCards)
-admin.site.register(BorrowedBooks)
+admin.site.register(Account)
+admin.site.register(Reader)
+admin.site.register(Librarian)
+admin.site.register(Admin)
+admin.site.register(Book)
+admin.site.register(BookCard)
+admin.site.register(BorrowedBook)
 admin.site.register(AuthorBookCard)
-admin.site.register(Authors)
-admin.site.register(Genres)
-admin.site.register(Reviews)
+admin.site.register(Author)
+admin.site.register(Genre)
+admin.site.register(Review)

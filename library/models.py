@@ -1,14 +1,14 @@
 from django.db import models
 
-class Genres(models.Model):
+class Genre(models.Model):
     title = models.CharField(max_length=30)
 
     def __str__(self):
         return self.title
 
 
-class BookCards(models.Model):
-    genre = models.ForeignKey(Genres, on_delete=models.CASCADE)
+class BookCard(models.Model):
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     isbn = models.CharField(max_length=18)
     release_year = models.IntegerField()
@@ -17,7 +17,7 @@ class BookCards(models.Model):
         return self.title
 
 
-class Authors(models.Model):
+class Author(models.Model):
     full_name = models.CharField(max_length=30)
 
     def __str__(self):
@@ -25,20 +25,20 @@ class Authors(models.Model):
 
 
 class AuthorBookCard(models.Model):
-    book_card = models.ForeignKey(BookCards, on_delete=models.CASCADE)
-    author = models.ForeignKey(Authors, on_delete=models.CASCADE)
+    book_card = models.ForeignKey(BookCard, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.book_card} by {self.author}'
 
 
-class Accounts(models.Model):
+class Account(models.Model):
     email = models.EmailField(max_length=254)
     password_hash = models.CharField(max_length=255)
 
 
-class Readers(models.Model):
-    account = models.OneToOneField(Accounts, on_delete=models.CASCADE)
+class Reader(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=150)
     passport_series = models.CharField(max_length=10, unique=True)
     address = models.CharField(max_length=200)
@@ -52,8 +52,8 @@ class Readers(models.Model):
         return self.fullname
 
 
-class Librarians(models.Model):
-    account = models.OneToOneField(Accounts, on_delete=models.CASCADE)
+class Librarian(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=150)
     passport_series = models.CharField(max_length=10, unique=True)
     address = models.CharField(max_length=200)
@@ -64,8 +64,8 @@ class Librarians(models.Model):
         return self.fullname
 
 
-class Admins(models.Model):
-    account = models.OneToOneField(Accounts, on_delete=models.CASCADE)
+class Admin(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=150)
     passport_series = models.CharField(max_length=10, unique=True)
     address = models.CharField(max_length=200)
@@ -76,8 +76,8 @@ class Admins(models.Model):
         return self.fullname
 
 
-class Books(models.Model):
-    book_card = models.ForeignKey(BookCards, on_delete=models.CASCADE)
+class Book(models.Model):
+    book_card = models.ForeignKey(BookCard, on_delete=models.CASCADE)
     in_reading_room = models.BooleanField()
     inventory_number = models.IntegerField(unique=True)
 
@@ -85,9 +85,9 @@ class Books(models.Model):
         return self.book_card.title
 
 
-class Reviews(models.Model):
-    book_card = models.ForeignKey(BookCards, on_delete=models.CASCADE)
-    reader = models.ForeignKey(Readers, on_delete=models.CASCADE)
+class Review(models.Model):
+    book_card = models.ForeignKey(BookCard, on_delete=models.CASCADE)
+    reader = models.ForeignKey(Reader, on_delete=models.CASCADE)
     rating = models.IntegerField()
     comment = models.CharField(max_length=255, null=True, blank=True)
 
@@ -95,10 +95,10 @@ class Reviews(models.Model):
         return f'Review for {self.book_card.title}'
 
 
-class BorrowedBooks(models.Model):
-    book = models.ForeignKey(Books, on_delete=models.CASCADE)
-    reader = models.ForeignKey(Readers, on_delete=models.CASCADE)
-    librarian = models.ForeignKey(Librarians, on_delete=models.CASCADE)
+class BorrowedBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    reader = models.ForeignKey(Reader, on_delete=models.CASCADE)
+    librarian = models.ForeignKey(Librarian, on_delete=models.CASCADE)
     borrow_date = models.DateField()
     return_until_date = models.DateField()
 
