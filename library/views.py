@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -35,5 +34,3 @@ def login_view(request):
             return redirect('home')
         else:
             messages.error(request, 'Неправильне ім\'я користувача або пароль')
-
-    return render(request, 'auth/login.html')
