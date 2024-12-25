@@ -36,3 +36,6 @@ def login_view(request):
             messages.error(request, 'Неправильне ім\'я користувача або пароль')
     else:
         return render(request, 'auth/login.html')
+
+def home(request):
+    return render(request, 'base.html')
