@@ -14,32 +14,7 @@
         </a>
     </div>
 </div>
-<div class="books">
-    <p>Books</p>
-    <hr>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Authors</th>
-                    <th>Genre</th>
-                    <th>Release Year</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in books %}
-                    <tr>
-                        <td>{{ book.title }}</td>
-                        <td>{{ book.authors }}</td>
-                        <td>{{ book.genre }}</td>
-                        <td>{{ book.release_year }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+{% include 'books.html' %}
 {% endblock %}
 
 

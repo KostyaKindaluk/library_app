@@ -2,13 +2,7 @@ from django.shortcuts import render, redirect
 from .models import BookCard,AuthorBookCard, Author, Book, Genre
 from .forms import BookForm
 
-def register(request):
-    return render(request, "register.html")
-
-def login(request):
-    return render(request, "login.html")
-
-def home(request):
+def get_books_list():
     book_cards = (
         BookCard.objects
         .select_related('genre')
@@ -23,10 +17,22 @@ def home(request):
             'genre': book_card.genre.title,
             'release_year': book_card.release_year,
         })
-    return render(request, 'index.html', {'books': book_list})
+    return book_list
+
+def register(request):
+    return render(request, "register.html")
+
+def login(request):
+    return render(request, "login.html")
+
+def home(request):
+    return render(request, 'index.html', {'books': get_books_list()})
 
 def librarian(request):
-    return render(request, 'librarian.html')
+    return render(request, 'librarian.html', {'books': get_books_list()})
+
+def reader(request):
+    return render(request, 'reader.html', {'books': get_books_list()})
 
 def librarian_add_book(request):
     if request.method == 'POST':
