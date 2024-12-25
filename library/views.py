@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from .models import BookCard,AuthorBookCard, Author, Book, Genre
 from .forms import BookForm
@@ -47,24 +48,10 @@ def librarian_add_book(request):
             inventory_number = form.cleaned_data['inventory_number']
 
             genre, _ = Genre.objects.get_or_create(title=genre_title)
-            book_card, _ = BookCard.objects.get_or_create(
-                genre=genre,
-                title=title,
-                isbn=isbn,
-                release_year=release_year
-            )
+            book_card, _ = BookCard.objects.get_or_create(genre=genre, title=title, isbn=isbn, release_year=release_year)
             author, _ = Author.objects.get_or_create(full_name=author_full_name)
-
-            AuthorBookCard.objects.get_or_create(
-                book_card=book_card,
-                author=author
-            )
-
-            Book.objects.create(
-                book_card=book_card,
-                in_reading_room=is_in_reading_room,
-                inventory_number=inventory_number
-            )
+            AuthorBookCard.objects.get_or_create(book_card=book_card, author=author)
+            Book.objects.create(book_card=book_card, in_reading_room=is_in_reading_room, inventory_number=inventory_number)
 
             return redirect('./')
         else:
@@ -72,4 +59,5 @@ def librarian_add_book(request):
 
     form = BookForm()
     return render(request, 'lib_add_book.html', {'form': form})
+
 
