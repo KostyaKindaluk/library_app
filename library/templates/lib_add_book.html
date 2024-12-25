@@ -8,9 +8,15 @@
 <p class="form_text_lib">Form for adding books</p>
 <form method="post">
     {% csrf_token %}
-    <input type="text" class="form-control" placeholder="title">
-    <input type="text" class="form-control" placeholder="genre">
+    {{ form.title }}
+    {{ form.genre }}
+    {{ form.isbn }}
+    {{ form.author }}
+    {{ form.release_year }}
+    {{ form.inventory_number }}
+    {{ form.is_in_reading_room }}
     <button class="btn btn-success">Add book</button>
+    <div class="lib_add_form_errors">{{ errors }}</div>
 </form>
 {% endblock %}
 

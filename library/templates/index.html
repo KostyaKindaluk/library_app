@@ -2,7 +2,44 @@
 {% block title %}Library{% endblock %}
 
 {% block content %}
-
+<div class="reg-log">
+    <div class="login">
+        <a href="">
+            <button class="btn btn-success">Login</button>
+        </a>
+    </div>
+    <div class="registration">
+        <a href="">
+            <button class="btn btn-warning">Registration</button>
+        </a>
+    </div>
+</div>
+<div class="books">
+    <p>Books</p>
+    <hr>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Authors</th>
+                    <th>Genre</th>
+                    <th>Release Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.authors }}</td>
+                        <td>{{ book.genre }}</td>
+                        <td>{{ book.release_year }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
 
 
