@@ -1,0 +1,16 @@
+body {
+    padding: 30px;
+}
+
+form {
+    max-width: 500px;
+    input {
+        margin: 15px 0;
+    }
+}
+
+.form_text_lib {
+    font-size: 20px;
+    font-style: 'Arial';
+    margin-top: 50px;
+}

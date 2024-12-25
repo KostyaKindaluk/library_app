@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Adding a book{% endblock %}
+
+{% block content %}
+<a href="{% url 'librarian' %}">
+    <button class="btn btn-danger">Go back</button>
+</a>
+<p class="form_text_lib">Form for adding books</p>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" class="form-control" placeholder="title">
+    <input type="text" class="form-control" placeholder="genre">
+    <button class="btn btn-success">Add book</button>
+</form>
+{% endblock %}
+
+

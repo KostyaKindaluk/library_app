@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}Librarian{% endblock %}
+
+{% block content %}
+<a href="{% url 'lib_add_book' %}">
+    <button>Add book</button>
+</a>
+{% endblock %}
