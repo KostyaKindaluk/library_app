@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<a href="{% url 'home' %}">
+    <button class="btn btn-danger">Go back</button>
+</a>
+<p class="form_login">Form for login</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.email }}
+    {{ form.password }}
+    <button class="btn btn-success">Login</button>
+    <div class="login_form_errors">{{ errors }}</div>
+</form>
+
+{% endblock %}
+
+

@@ -34,7 +34,7 @@ class AuthorBookCard(models.Model):
 
 class Account(models.Model):
     email = models.EmailField(max_length=254)
-    password_hash = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
 
 
 class Reader(models.Model):

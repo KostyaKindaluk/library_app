@@ -6,13 +6,13 @@ form {
     input { margin: 15px 0; }
 }
 
-.form_text_lib {
+.form_text_lib, .form_login {
     font-size: 20px;
     font-style: 'Arial';
     margin-top: 50px;
 }
 
-.lib_add_form_errors {
+.lib_add_form_errors, .login_form_errors {
     color: red;
     font-size: 20px;
     font-style: 'Arial';
