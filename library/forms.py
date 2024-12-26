@@ -1,5 +1,5 @@
 from django.forms import (TextInput, EmailInput, PasswordInput, ModelForm,
-                          Form, CharField, IntegerField, BooleanField)
+                          Form, CharField, IntegerField, BooleanField, EmailField)
 from .models import Account
 
 class BookForm(Form):
@@ -52,6 +52,32 @@ class LoginForm(ModelForm):
             })
         }
 
-
+class RegisterForm(Form):
+    fullname = CharField(max_length=255,
+                         widget=TextInput(attrs={
+                             'class': 'form-control',
+                             'placeholder': 'fullname'})
+                         )
+    email = EmailField(
+                      max_length=254,
+                      widget=EmailInput(attrs={
+                          'class' : 'form-control',
+                          'placeholder': 'email'}, )
+                      )
+    password = CharField(max_length=255,
+                      widget=PasswordInput(attrs={
+                          'class' : 'form-control',
+                          'placeholder': 'password'})
+                      )
+    phone_number = CharField(max_length=20,
+                     widget=TextInput(attrs={
+                         'class' : 'form-control',
+                         'placeholder': 'phone number'})
+                     )
+    address = CharField(max_length=200,
+                       widget=TextInput(attrs={
+                           'class' : 'form-control',
+                           'placeholder': 'address'})
+                       )
 
 

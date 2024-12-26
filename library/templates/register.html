@@ -5,6 +5,16 @@
 <a href="{% url 'home' %}">
     <button class="btn btn-danger">Go back</button>
 </a>
-
+<div class="form_register">Form for registration</div>
+<form method="post">
+    {% csrf_token %}
+    {{ form.fullname }}
+    {{ form.email }}
+    {{ form.password }}
+    {{ form.phone_number }}
+    {{ form.address }}
+    <button class="btn btn-success">Register</button>
+    <div class="register_form_errors">{{ errors }}</div>
+</form>
 {% endblock %}
 

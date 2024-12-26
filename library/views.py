@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from .models import (BookCard,AuthorBookCard, Author, Book,
                      Genre, Account, Librarian, Reader)
-from .forms import BookForm, LoginForm
+from .forms import BookForm, LoginForm, RegisterForm
 
 def get_books_list():
     book_cards = (
@@ -24,7 +24,36 @@ def get_books_list():
     return book_list
 
 def register(request):
-    return render(request, "register.html")
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            fullname = form.cleaned_data['fullname']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            phone_number = form.cleaned_data['phone_number']
+            address = form.cleaned_data['phone_number']
+            if (not Account.objects.filter(email=email).exists() and
+                    not Reader.objects.filter(phone_number=phone_number).exists()):
+                account = Account(email=email, password=password)
+                account.save()
+                reader = Reader(
+                    account=account,
+                    fullname=fullname,
+                    address=address,
+                    phone_number=phone_number,
+                )
+                reader.save()
+                return redirect("../", {'reader': reader})
+            else:
+                return render(request, "register.html",
+        {
+                'form': form,
+                'errors': ' user with such email or phone number is already exists'
+                })
+
+    form = RegisterForm()
+    return render(request, "register.html",
+                  {'form': form})
 
 def login(request):
     if request.method == 'POST':
@@ -41,8 +70,11 @@ def login(request):
             data = {'books': get_books_list()}
             if hasattr(account, 'reader'):
                 return redirect("../reader",data)
-            if hasattr(account, 'librarian'):
+            elif hasattr(account, 'librarian'):
                 return redirect("../librarian", data)
+        else:
+            return render(request, "login.html",
+                          {'errors': 'Form is not valid', 'form': form})
     form = LoginForm()
     data = {
         'form': form
