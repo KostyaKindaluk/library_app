@@ -5,8 +5,16 @@
 
 {% for el in account %}
     {{ el.email }}
-{% endfor %}
-<hr>
+{% endfor %} <br><br>
+
+<div class="buttons-reader-container">
+    <div>
+        <a href="{% url 'logout' %}">
+            <button class="btn btn-warning">Logout</button>
+        </a>
+    </div>
+</div>
+
 <hr>
 {% include 'books.html' %}
 {% endblock %}

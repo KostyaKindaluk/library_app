@@ -71,7 +71,7 @@ td { font-size: 16px; }
     overflow-x: auto;
 }
 
-.buttons-librarian-container {
+.buttons-librarian-container, .buttons-reader-container {
     display: flex;
     div {
         margin-right: 25px;
