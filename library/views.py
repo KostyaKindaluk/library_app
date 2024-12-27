@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, reverse
 from .models import (BookCard,AuthorBookCard, Author, Book,
                      Genre, Account, Librarian, Reader)
-from .forms import BookForm, LoginForm, RegisterForm
+from .forms import BookForm, LoginForm, RegisterForm, ObjectBookForm
 
 def get_books_list():
     book_cards = (
@@ -63,6 +63,40 @@ def librarian_add_book(request):
     return render(request, 'lib_add_book.html',
                   {'form': form})
 
+def librarian_delete_book(request):
+    if request.method == 'POST':
+        form = ObjectBookForm(request.POST)
+        data = {
+            'form': form,
+            'errors': 'there is no book with such inventory number'
+        }
+        if form.is_valid():
+            inventory_number = form.cleaned_data['inventory_number']
+            if Book.objects.filter(inventory_number=inventory_number).exists():
+                book = Book.objects.get(inventory_number=inventory_number)
+                bookCard = book.book_card
+                book.delete()
+                if not Book.objects.filter(book_card=bookCard).exists():
+                    genre = bookCard.genre
+                    authorBookCards = AuthorBookCard.objects.filter(book_card=bookCard)
+                    authors = []
+                    for authorBookCard in authorBookCards:
+                        authors.append(authorBookCard.author)
+                    bookCard.delete()
+                    for author in authors:
+                        if not AuthorBookCard.objects.filter(author=author).exists():
+                            Author.objects.filter(full_name=author).delete()
+                    if not BookCard.objects.filter(genre=genre).exists():
+                        Genre.objects.filter(title=genre).delete()
+                return redirect('./')
+            else:
+                return render(request, 'lib_del_book.html', data)
+        else:
+            return render(request, 'lib_del_book.html', data)
+    form = BookForm()
+    return render(request, 'lib_del_book.html',
+                  {'form': form})
+
 def home(request):
     return render(request, 'index.html',
                   {'books': get_books_list()})
@@ -111,6 +145,10 @@ def login(request):
                 data = { 'errors': 'Check email and password again', 'form': form }
                 return render(request, "login.html", data)
             account = Account.objects.get(email=email, password=password)
+
+            request.session['user_id'] = account.id
+            request.session['user_type'] = 'reader' if hasattr(account, 'reader') else 'librarian'
+
             data = {'books': get_books_list()}
             if hasattr(account, 'reader'):
                 return redirect("../reader",data)
@@ -120,16 +158,30 @@ def login(request):
             return render(request, "login.html",
                           {'errors': 'Form is not valid', 'form': form})
     form = LoginForm()
-    data = {
-        'form': form
-    }
-    return render(request, "login.html", data)
+    return render(request, "login.html", { 'form': form })
 
 def librarian(request):
+    if 'user_id' not in request.session or request.session.get('user_type') != 'librarian':
+        return redirect("login")
+    lib = Librarian.objects.filter(account=request.session.get('user_id'))
+    acc = Account.objects.filter(pk=request.session.get('user_id'))
     return render(request, 'librarian.html',
-                  {'books': get_books_list()})
+                  {
+                            'books': get_books_list(),
+                            'librarian': lib,
+                            'account': acc
+                          })
 
 def reader(request):
+    if 'user_id' not in request.session or request.session.get('user_type') != 'reader':
+        return redirect("login")
+    read = Reader.objects.filter(account=request.session.get('user_id'))
+    acc = Account.objects.filter(pk=request.session.get('user_id'))
     return render(request, 'reader.html',
-                  {'books': get_books_list()})
+                  {
+                            'books': get_books_list(),
+                            'reader': read,
+                            'account': acc
+                          })
+
 

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Adding a book{% endblock %}
+
+{% block content %}
+<a href="{% url 'librarian' %}">
+    <button class="btn btn-danger">Go back</button>
+</a>
+<p class="form_text_lib">Form for deleting books</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.inventory_number }}
+    <button class="btn btn-success">Delete book</button>
+    <div class="lib_del_form_errors">{{ errors }}</div>
+</form>
+{% endblock %}
+
+

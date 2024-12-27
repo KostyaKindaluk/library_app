@@ -2,7 +2,13 @@
 {% block title %}Reader{% endblock %}
 
 {% block content %}
+
+{% for el in account %}
+    {{ el.email }}
+{% endfor %}
+<hr>
 <hr>
 {% include 'books.html' %}
 {% endblock %}
+
 

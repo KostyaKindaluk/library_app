@@ -2,9 +2,23 @@
 {% block title %}Librarian{% endblock %}
 
 {% block content %}
-<a href="{% url 'lib_add_book' %}">
-    <button class="btn btn-success">Add book</button>
-</a>
+
+{% for el in account %}
+    {{ el.email }}
+{% endfor %} <br><br>
+
+<div class="buttons-librarian-container">
+    <div>
+        <a class="delete-button-book" href="{% url 'lib_add_book' %}">
+            <button class="btn btn-success">Add book</button>
+        </a>
+    </div>
+    <div>
+        <a href="{% url 'lib_del_book' %}">
+            <button class="btn btn-danger">Delete book</button>
+        </a>
+    </div>
+</div>
 <hr>
 {% include 'books.html' %}
 {% endblock %}

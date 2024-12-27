@@ -7,6 +7,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('librarian/', views.librarian, name='librarian'),
     path('librarian/add_book', views.librarian_add_book, name='lib_add_book'),
+    path('librarian/delete_book', views.librarian_delete_book, name='lib_del_book'),
     path('reader', views.reader, name='reader')
 ]
 

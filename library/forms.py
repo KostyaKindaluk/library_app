@@ -80,4 +80,10 @@ class RegisterForm(Form):
                            'placeholder': 'address'})
                        )
 
+class ObjectBookForm(Form):
+    inventory_number = IntegerField(widget=TextInput(attrs={
+        'class' : 'form-control',
+        'placeholder': 'inventory number'})
+    )
+
 
