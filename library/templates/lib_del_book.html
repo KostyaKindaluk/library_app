@@ -2,6 +2,9 @@
 {% block title %}Adding a book{% endblock %}
 
 {% block content %}
+{% for el in account %}
+    {{ el.email }}
+{% endfor %} <br><br>
 <a href="{% url 'librarian' %}">
     <button class="btn btn-danger">Go back</button>
 </a>

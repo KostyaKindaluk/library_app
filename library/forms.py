@@ -86,4 +86,23 @@ class ObjectBookForm(Form):
         'placeholder': 'inventory number'})
     )
 
-
+class BookingForm(Form):
+    title = CharField(max_length=255,
+                         widget=TextInput(attrs={
+                             'class': 'form-control',
+                             'placeholder': 'title'})
+                         )
+    authors = CharField(max_length=254,
+                            widget=TextInput(attrs={
+                                'class': 'form-control',
+                                'placeholder': 'authors'}, )
+                        )
+    genre = CharField(max_length=255,
+                         widget=TextInput(attrs={
+                             'class': 'form-control',
+                             'placeholder': 'genre'})
+                         )
+    release_year = IntegerField(widget=TextInput(attrs={
+                                 'class': 'form-control',
+                                 'placeholder': 'release year'})
+                             )

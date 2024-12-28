@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Reader{% endblock %}
+
+{% block content %}
+
+{% for el in account %}
+    {{ el.email }}
+{% endfor %} <br><br>
+
+<a href="{% url 'reader' %}">
+    <button class="btn btn-danger">Go back</button>
+</a>
+<p class="form_text_booking">Form for booking books</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.title }}
+    {{ form.authors }}
+    {{ form.genre }}
+    {{ form.release_year }}
+    <button class="btn btn-success">Book</button>
+    <div class="booking_form_errors">{{ errors }}</div>
+</form>
+{% endblock %}
+
+

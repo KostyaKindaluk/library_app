@@ -96,11 +96,11 @@ class Review(models.Model):
 
 
 class BorrowedBook(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     reader = models.ForeignKey(Reader, on_delete=models.CASCADE)
-    librarian = models.ForeignKey(Librarian, on_delete=models.CASCADE)
-    borrow_date = models.DateField()
-    return_until_date = models.DateField()
+    title = models.CharField(max_length=200, null=True)
+    authors = models.CharField(max_length=200, null=True)
+    genre = models.CharField(max_length=200, null=True)
+    release_year = models.IntegerField(null=True)
 
     def __str__(self):
-        return f'{self.book} borrowed by {self.reader}'
+        return f'{self.title}, {self.genre}'

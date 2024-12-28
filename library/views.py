@@ -1,8 +1,8 @@
 
-from django.shortcuts import render, redirect, reverse
-from .models import (BookCard,AuthorBookCard, Author, Book,
-                     Genre, Account, Librarian, Reader)
-from .forms import BookForm, LoginForm, RegisterForm, ObjectBookForm
+from django.shortcuts import render, redirect
+from .models import (BookCard,AuthorBookCard, Author, Book, Review,
+                     Genre, Account, Librarian, Reader, BorrowedBook)
+from .forms import BookForm, LoginForm, RegisterForm, ObjectBookForm, BookingForm
 
 def get_books_list():
     book_cards = (
@@ -24,6 +24,8 @@ def get_books_list():
     return book_list
 
 def librarian_add_book(request):
+    if 'user_id' not in request.session or request.session.get('user_type') != 'librarian':
+        return redirect("login")
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
@@ -38,32 +40,39 @@ def librarian_add_book(request):
             genre, _ = Genre.objects.get_or_create(
                 title=genre_title
             )
-            book_card, _ = BookCard.objects.get_or_create(
-                genre=genre,
-                title=title,
-                isbn=isbn,
-                release_year=release_year)
-            author, _ = Author.objects.get_or_create(
-                full_name=author_full_name
-            )
-            AuthorBookCard.objects.get_or_create(
-                book_card=book_card,
-                author=author
-            )
-            Book.objects.create(
-                book_card=book_card,
-                in_reading_room=is_in_reading_room,
-                inventory_number=inventory_number
-            )
+            try:
+                book_card, _ = BookCard.objects.get_or_create(
+                    genre=genre,
+                    title=title,
+                    isbn=isbn,
+                    release_year=release_year)
+                author, _ = Author.objects.get_or_create(
+                    full_name=author_full_name
+                )
+                AuthorBookCard.objects.get_or_create(
+                    book_card=book_card,
+                    author=author
+                )
+                Book.objects.create(
+                    book_card=book_card,
+                    in_reading_room=is_in_reading_room,
+                    inventory_number=inventory_number
+                )
+            except BaseException as er:
+                return render(request, 'lib_add_book.html',
+                              {'form': form, 'errors': er})
             return redirect('./')
         else:
             return render(request, 'lib_add_book.html',
                           {'form': form, 'errors': 'incorrect values'})
     form = BookForm()
+    acc = Account.objects.filter(pk=request.session.get('user_id'))
     return render(request, 'lib_add_book.html',
-                  {'form': form})
+                  {'form': form, 'account': acc})
 
 def librarian_delete_book(request):
+    if 'user_id' not in request.session or request.session.get('user_type') != 'librarian':
+        return redirect("login")
     if request.method == 'POST':
         form = ObjectBookForm(request.POST)
         data = {
@@ -94,8 +103,9 @@ def librarian_delete_book(request):
         else:
             return render(request, 'lib_del_book.html', data)
     form = BookForm()
+    acc = Account.objects.filter(pk=request.session.get('user_id'))
     return render(request, 'lib_del_book.html',
-                  {'form': form})
+                  {'form': form, 'account': acc})
 
 def home(request):
     return render(request, 'index.html',
@@ -187,5 +197,50 @@ def reader(request):
 def logout(request):
     request.session.flush()
     return redirect('../')
+
+def readers(request):
+    if 'user_id' not in request.session or request.session.get('user_type') != 'librarian':
+        return redirect("login")
+    acc = Account.objects.filter(pk=request.session.get('user_id'))
+    return render(request, 'readers.html',
+                  {'account': acc})
+
+def booking(request):
+    if 'user_id' not in request.session or request.session.get('user_type') != 'reader':
+        return redirect("login")
+    acc = Account.objects.filter(pk=request.session.get('user_id'))
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            genre = form.cleaned_data['genre']
+            authors = form.cleaned_data['authors']
+            release_year = form.cleaned_data['release_year']
+            try:
+                BookCard.objects.get(
+                    genre=Genre.objects.get(title=genre),
+                    title=title, release_year=release_year)
+                Author.objects.get(full_name=authors)
+                BorrowedBook.objects.create(Reader.objects.get(account=acc),
+                                            title=title, genre=genre,
+                                            authors=authors,
+                                            release_year=release_year)
+                return redirect('../',
+                              {'account': acc, 'form': form})
+            except BaseException as er:
+                print(er)
+                return render(request, 'booking.html',
+                              {'account': acc, 'form': form,
+                               'errors': 'There is no such book'})
+
+        else:
+            return render(request, 'booking.html',
+                          {'account': acc, 'form': form,
+                           'errors': 'There is no such book'})
+
+    form = BookingForm()
+    return render(request, 'booking.html',
+                  {'account': acc, 'form': form})
+
 
 
