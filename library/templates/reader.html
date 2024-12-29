@@ -14,12 +14,16 @@
         </a>
     </div>
     <div>
-        <a href="{% url 'booking' %}">
-            <button class="btn btn-success">Book a book</button>
+        <a href="{% url 'borrowing' %}">
+            <button class="btn btn-success">Borrow a book</button>
+        </a>
+    </div>
+    <div>
+        <a href="{% url 'review' %}">
+            <button class="btn btn-success">Leave a review</button>
         </a>
     </div>
 </div>
-
 <hr>
 {% include 'books.html' %}
 {% endblock %}

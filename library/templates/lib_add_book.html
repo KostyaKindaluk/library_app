@@ -13,11 +13,9 @@
     {% csrf_token %}
     {{ form.title }}
     {{ form.genre }}
-    {{ form.isbn }}
     {{ form.author }}
     {{ form.release_year }}
     {{ form.inventory_number }}
-    {{ form.is_in_reading_room }}
     <button class="btn btn-success">Add book</button>
     <div class="lib_add_form_errors">{{ errors }}</div>
 </form>

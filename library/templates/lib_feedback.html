@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
-{% block title %}Readers{% endblock %}
+{% block title %}Feedback{% endblock %}
 
 {% block content %}
-
 {% for el in account %}
-    {{ el.email }}
-{% endfor %} <br><br>
+    {{ el.email }} <br><br>
+{% endfor %}
 <a href="{% url 'librarian' %}">
     <button class="btn btn-danger">Go back</button>
 </a>
 <hr>
 
 {% for el in elements %}
-    {{ el }}<br>
+    {{ el }}<br><hr>
 {% endfor %}
 
 {% endblock %}
+
+

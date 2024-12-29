@@ -1,6 +1,7 @@
 from django.forms import (TextInput, EmailInput, PasswordInput, ModelForm,
-                          Form, CharField, IntegerField, BooleanField, EmailField)
+                          Form, CharField, IntegerField, EmailField, Textarea)
 from .models import Account
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class BookForm(Form):
     title = CharField(
@@ -14,11 +15,6 @@ class BookForm(Form):
                           'class' : 'form-control',
                           'placeholder': 'genre'})
                       )
-    isbn = CharField(max_length=20,
-                     widget=TextInput(attrs={
-                         'class' : 'form-control',
-                         'placeholder': 'isbn'})
-                     )
     author = CharField(max_length=200,
                        widget=TextInput(attrs={
                            'class' : 'form-control',
@@ -26,15 +22,12 @@ class BookForm(Form):
                        )
     release_year = IntegerField(widget=TextInput(attrs={
         'class' : 'form-control',
-        'placeholder': 'release year'})
+        'placeholder': 'release year'}),
+        validators=[MinValueValidator(1900), MaxValueValidator(2024)]
     )
     inventory_number = IntegerField(widget=TextInput(attrs={
         'class' : 'form-control',
-        'placeholder': 'inventory number'})
-    )
-    is_in_reading_room = BooleanField(widget=TextInput(attrs={
-        'class' : 'form-control',
-        'placeholder': 'is in reading room ? (0 / 1 - false / true)'})
+        'placeholder': 'inventory number'}),
     )
 
 class LoginForm(ModelForm):
@@ -86,23 +79,10 @@ class ObjectBookForm(Form):
         'placeholder': 'inventory number'})
     )
 
-class BookingForm(Form):
-    title = CharField(max_length=255,
-                         widget=TextInput(attrs={
-                             'class': 'form-control',
-                             'placeholder': 'title'})
-                         )
-    authors = CharField(max_length=254,
-                            widget=TextInput(attrs={
-                                'class': 'form-control',
-                                'placeholder': 'authors'}, )
-                        )
-    genre = CharField(max_length=255,
-                         widget=TextInput(attrs={
-                             'class': 'form-control',
-                             'placeholder': 'genre'})
-                         )
-    release_year = IntegerField(widget=TextInput(attrs={
-                                 'class': 'form-control',
-                                 'placeholder': 'release year'})
-                             )
+class FeedbackForm(Form):
+    feedback = CharField(widget=Textarea(attrs={
+        'class' : 'form-control',
+        'placeholder': 'review'})
+    )
+
+

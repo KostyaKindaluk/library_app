@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Leaving a review{% endblock %}
+
+{% block content %}
+{% for el in account %}
+    {{ el.email }} <br><br>
+{% endfor %}
+<a href="{% url 'reader' %}">
+    <button class="btn btn-danger">Go back</button>
+</a>
+<p class="form_text_lib">Form for leaving a review</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.feedback }}
+    <button class="btn btn-success button-feedback">Leave a review</button>
+    <div class="feedback_form_errors">{{ errors }}</div>
+</form>
+{% endblock %}
+
+

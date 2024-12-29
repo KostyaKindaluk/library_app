@@ -9,8 +9,7 @@ class Genre(models.Model):
 
 class BookCard(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
-    isbn = models.CharField(max_length=18)
+    title = models.CharField(max_length=50, unique=True)
     release_year = models.IntegerField()
 
     def __str__(self):
@@ -78,29 +77,26 @@ class Admin(models.Model):
 
 class Book(models.Model):
     book_card = models.ForeignKey(BookCard, on_delete=models.CASCADE)
-    in_reading_room = models.BooleanField()
-    inventory_number = models.IntegerField(unique=True)
+    inventory_number = models.IntegerField()
 
     def __str__(self):
         return self.book_card.title
 
 
 class Review(models.Model):
-    book_card = models.ForeignKey(BookCard, on_delete=models.CASCADE)
     reader = models.ForeignKey(Reader, on_delete=models.CASCADE)
-    rating = models.IntegerField()
-    comment = models.CharField(max_length=255, null=True, blank=True)
+    feedback = models.CharField(max_length=1000, null=True)
 
     def __str__(self):
-        return f'Review for {self.book_card.title}'
+        return f'Review for {self.reader}'
 
 
 class BorrowedBook(models.Model):
-    reader = models.ForeignKey(Reader, on_delete=models.CASCADE)
+    reader = models.ForeignKey(Reader, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=200, null=True)
     authors = models.CharField(max_length=200, null=True)
     genre = models.CharField(max_length=200, null=True)
     release_year = models.IntegerField(null=True)
 
     def __str__(self):
-        return f'{self.title}, {self.genre}'
+        return f'{self.title}, by {self.reader}'

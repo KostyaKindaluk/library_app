@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Reader{% endblock %}
+{% block title %}Borrowing{% endblock %}
 
 {% block content %}
 
@@ -10,14 +10,11 @@
 <a href="{% url 'reader' %}">
     <button class="btn btn-danger">Go back</button>
 </a>
-<p class="form_text_booking">Form for booking books</p>
+<p class="form_text_booking">Form for borrowing books</p>
 <form method="post">
     {% csrf_token %}
-    {{ form.title }}
-    {{ form.authors }}
-    {{ form.genre }}
-    {{ form.release_year }}
-    <button class="btn btn-success">Book</button>
+    {{ form.inventory_number }}
+    <button class="btn btn-success">Borrow</button>
     <div class="booking_form_errors">{{ errors }}</div>
 </form>
 {% endblock %}
